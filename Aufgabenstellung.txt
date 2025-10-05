@@ -1,0 +1,173 @@
+AUFGABE C/C*: SKILIFT-SIMULATOR
+
+Die reguläre Aufgabenvariante C enthält optionale Anforderungen. Werden diese erfüllt, können Zusatzpunkte gesammelt werden.
+
+In der Aufgabenvariante C* sind alle Anforderungen obligatorisch!
+
+
+PROGRAMMIEREN SIE EINEN SKILIFT-SIMULATOR!
+
+
+Im beschaulichen Schneedorf gibt es einen kleinen Berg mit zwei blauen, zwei roten und einer schwarzen Piste. 
+Mit einem Skilift können die Skifahrer an der Mittelstation die Pisten B1 und R1 erreichen. 
+Bleiben sie im Lift sitzen, fahren sie weiter zur Bergstation mit den Pisten B2, R2 und S1. 
+An der Bergstation müssen alle aussteigen.
+
+
+An der Bergstation dürfen Angsthasen mit dem Lift wieder runterfahren. 
+An der Mittelstation können sowohl die Angsthasen der Bergstation aussteigen als auch neuerliche Angsthasen zusteigen und zur Talstation runterfahren. 
+An der Talstation müssen dann alle aussteigen.
+
+
+Der Skilift fährt 4 Minuten bis zur Mittelstation und weitere 5 Minuten zur Bergstation. 
+Die Vierersitze sind equidistant am Seil befestigt; alle 10 Sekunden kommt ein Vierersitz. 
+Es sind also jederzeit 54 Vierersitze auf dem Weg nach oben und 54 Vierersitze auf dem Weg nach unten. 
+In den Wendekränzen sind jeweils 2 Vierersitze. In Summe gibt es also 110 Vierersitze.
+
+
+Das Zusteigen und Aussteigen muss während der Fahrt geschehen. Der Lift hält dafür nicht an.
+(Im Sinne dieser Prüfungsleistung gehen Sie davon aus, dass es keine Unfälle beim Zusteigen und Aussteigen gibt. Der Notaus muss nie betätigt werden.)
+
+
+Auf einem Vierersitz dürfen maximal vier Personen sitzen! 
+(Soll heiﬂen: Wenn ein Vierersitz in der Talstation von drei Personen belegt wird, niemand an der Mittelstation aussteigt, kann nur eine weitere Person für die Fahrt zur Bergstation zusteigen!)
+
+
+Die Abfahrtszeiten der Pisten lauten wie folgt (Schnellste/Durchschnitt):
+* B1 (Mittelstation): 3/11 Minuten
+* B2 (Bergstation):   5/21 Minuten (danach weiter über B1 oder R1)
+* R1 (Mittelstation): 3/10 Minuten
+* R2 (Bergstation):   4/19 Minuten (danach weiter über B1 oder R1)
+* S1 (Bergstation):   9/34 Minuten (fährt nicht über Mittelstation)
+(Beachten Sie, dass es hier keine langsamste Zeit gibt. Wenn ein Skifahrer 3 Stunden für eine Piste braucht, dann ist das so.)
+
+
+Die Skifahrer können zwei verschiedene Karten kaufen:
+1) 10er-Karte für 10 Fahrten mit dem Skilift (bei jedem Zustieg wird 1 Fahrt abgezogen)
+   Mögliche Fahrten (kosten je 1 Fahrt):
+   ** Talstation 	--> Mittelstation
+   ** Talstation 	--> Bergstation
+   ** Mittelstation 	--> Bergstation
+   ** Mittelstation 	--> Talstation
+   ** Bergstation 	--> Mittelstation
+   ** Bergstation 	--> Talstation
+2) Tageskarte (gültig bis zum Schließen des Skilifts)
+
+
+Karten sind an Personen gebunden und sind nicht übertragbar! 
+Dank Online-Tickets sowie intensiv ausgebildetem Personal wird keinerlei Zeit für den Ticketkauf verschwendet.
+
+
+Der Skilift öffnet morgens um 9:00 Uhr und läuft durchgehend bis 20:00 Uhr. Der Berg schließt um 22:00 Uhr. 
+Skifahrer, die dann noch auf der Piste sind werden von der Bergwacht mit dem Schneemobil zur Talstation gebracht.
+
+
+Die Skifahrer kommen über den Tag zum Berg:
+* zu Fuß - einzelne Skifahrer aus Schneedorf
+  ** in Schneedorf gibt es maximal 60 Betten für Urlauber
+* mit dem Auto - ein bis fünf Skifahrer
+  ** in Schneedorf ist absolutes Halteverbot
+  ** es gibt nur am Skilift einen Parkplatz für 50 Autos
+* mit dem Bus - maximal fünfzig Skifahrer
+  ** der erste Bus kommt um 8:50 Uhr und fährt wieder um 8:53 Uhr
+  ** alle 20 Minuten kommt ein Bus (und fährt nach 3 Minuten wieder ab)
+  ** der letzte Bus kommt um 20:10 Uhr und fährt um 20:13 Uhr
+
+
+Beachten Sie, dass die Skifahrer auf demselben Weg den Berg verlassen, über den sie gekommen sind.
+(Soll heiﬂen: Wenn über den Tag 314 Skifahrer mit dem Auto gekommen sind, müssen 314 Skifahrer mit demselben Auto wieder abreisen, mit dem sie gekommen sind.)
+(Gehen Sie davon aus, dass alle Skifahrer schlau genug sind, sich ihre Zeit so einzuteilen, dass sie, sollten sie mit dem Bus gekommen sein, auch wieder mit dem Bus abreisen können.)
+
+
+Morgens und abends ist relativ wenig los. Die Spitzenzeit ist von 11 Uhr bis 17 Uhr.
+(Zur Vereinfachung dürfen Sie von einem linearen Anstieg und Abfall ausgehen.)
+
+
+OPTIONAL: 
+Auf der Mittelstation gibt es ein kleines Bistro, in dem Skifahrer ein paar Snacks kaufen können. 
+Sitzgelegenheiten gibt es nicht, weshalb die Skifahrer in der Kälte essen/trinken müssen.
+Das macht keiner freiwillig länger als 15 Minuten.
+(Vom Bestellvorgang bis zur Ausgabe der Waren rechnen Sie 2 Minuten.)
+
+
+OPTIONAL:
+Nachdem Gäste im Bistro gegessen haben, werden diese sich nicht sofort wieder beim Bistro anstellen.
+
+
+
+
+ANFORDERUNGEN AN DIE PRÜFUNGSLEISTUNG
+
+Ihr Skilift-Simulator soll eine Pseudo-grafische Ausgabe auf der Konsole haben. 
+Diese soll Texte und Grafikähnliche Objekte immer an der gleichen Stelle anzeigen.
+(Beispiel weiter unten)
+
+
+Ab Start des Programms soll die Simulation eines Tages laufen.
+
+
+Jede Abfahrt muss eine zufällige Auswahl der Piste und der Abfahrtszeit treffen. 
+Dabei darf die minimale Abfahrtszeit nicht unterschritten werden!
+(OPTIONAL: Skifahrer haben ein Niveau, welches sie nicht übersteigen. Ein blauer Fahrer wird also vielleicht eine rote Piste ausprobieren, wird aber von der schwarzen Piste fernbleiben.)
+
+
+Es müssen jederzeit alle Warteschlangen-Längen ersichtlich sein. 
+Beachten Sie, dass die Mittelstation zwei Warteschlangen hat (Auffahrt und Abfahrt) 
+und dass auch die Bushaltestelle eine Warteschlange bilden kann, wenn mehr Skifahrer den Berg verlassen wollen, als der Bus Kapazität hat.
+
+
+Es müssen jederzeit für alle fünf Pisten die Anzahl Skifahrer auf den Pisten ersichtlich sein.
+
+
+Es muss die Gesamtzahl aller verkauften 10er-Karten und Tageskarten ersichtlich sein.
+
+
+Es muss jederzeit die Belegung des Parkplatzes ersichtlich sein.
+
+
+Es muss ersichtlich sein, wann ein Bus einfährt, wartet und abfährt.
+
+
+Es muss jederzeit die Anzahl Skifahrer auf dem Berg ersichtlich sein 
+(d.h. Personen im Skilift, Personen beim Bistro, Personen auf den Pisten, Personen in den Warteschlangen).
+
+
+Es muss die Gesamtzahl aller Skifahrten kumulativ für den Tag gezählt werden. 
+(Beachten Sie, dass Angsthasen, welche mit dem Lift zurück zur Talstation fahren nicht als Skifahrt zählen! 
+ Beachten Sie weiterhin, dass eine 10er-Karte nicht zwingend zu 10 Skifahrten führt 
+ Ein Dummkopf könnte zur Mittelstation fahren, aussteigen und dann noch einmal zur Bergstation fahren.)
+
+
+Der Skilift-Simulator soll nicht in Echtzeit laufen. 
+Standardmäßig soll eine Realsekunde einer simulierten Minute entsprechen. 
+Auf Tastendruck soll um den Faktor 10 beschleunigt werden.
+
+
+Die Simulation muss jederzeit per Tastendruck pausiert werden können.
+Die Simulation muss jederzeit per Tastendruck beendet werden können.
+
+
+
+BEISPIELAUSGABE
+
+10er-Karten:  51                                   ___Bergstation    Lift ab:  2
+Tageskarten: 114                                  /        |    |
+Skifahrten:   77                                 /        /     |
+                                                -        /      |
+                                               /        |       |
+Lift M<>B:  22                               B2:  6   R2:   8  /
+                                             /        /       /
+                                         ----        |       /
+                                        /           /       /       Lift auf:  1
+                                        Mittelstation      |
+                                   _____Bistro:  7        /         Lift ab:   0
+                                  /        \             |
+                                  \         |           /
+Lift T<>M:  14                   B1:  4    R1: 12     S1:  5
+                                   \         \        /
+                                    \        /       /
+                                     ----Talstation--               Lift auf:  2
+10:12 Uhr                               (H):  0
+Personen auf Berg:  83                  [P]:  1 Auto
+...(T)urbo
+...(P)ause

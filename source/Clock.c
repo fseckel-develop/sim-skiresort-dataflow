@@ -85,18 +85,20 @@ void set_last_speed(Clock* clock) {
 
 
 /*  wait_seconds():
- *  Implements a waiting loop to pause program execution for a specified
- *  number of seconds. Uses the clock() function to measure elapsed CPU time.
- *      params: seconds as floating point
- *      return: none
+ *  Suspends execution for a given number of seconds using nanosleep().
+ *  Supports fractional seconds by splitting into seconds and nanoseconds.
+ *  Note: This simple version does not handle interruptions (EINTR).
+ *      params: duration in seconds (can be fractional, e.g. 1.5)
+ *      return: None
  */
 void wait_seconds(const double seconds) {
-    /* Saving the number of clock ticks elapsed since the program started */
-    const clock_t start_time = clock();
-    /* Calculating an end time by adding clock ticks for each given second to the start time */
-    const clock_t end_time = start_time + (clock_t)(seconds * CLOCKS_PER_SEC);
-    /* Waiting until the end time has been reached */
-    while (clock() < end_time) {}
+    struct timespec req;
+    /* Extract the whole seconds part */
+    req.tv_sec = (time_t)seconds;
+    /* Convert the fractional part into nanoseconds (1e9 ns = 1 second) */
+    req.tv_nsec = (long)((seconds - (double)req.tv_sec) * 1000000000.0);
+    /* Suspend execution for the specified time */
+    nanosleep(&req, NULL);
 }
 
 

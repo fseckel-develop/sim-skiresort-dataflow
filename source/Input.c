@@ -4,6 +4,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+static struct termios original_terminal;
+static int terminal_saved = 0;
+
 
 /*  IMPORTANT NOTE:
  *  The ANSI C (C90) standard does not provide support for asynchronous
@@ -24,10 +27,12 @@
  *      params: none
  *      return: none
  */
-void enable_raw_terminal_mode(void) {
+void enable_non_blocking_terminal_mode(void) {
     struct termios terminal;
     /* Getting current terminal attributes */
-    tcgetattr(STDIN_FILENO, &terminal);
+    tcgetattr(STDIN_FILENO, &original_terminal);
+    terminal_saved = 1;
+    terminal = original_terminal;
     /* Disabling canonical mode (buffered input) and echoing */
     terminal.c_lflag &= ~(ICANON | ECHO);
     /* Applying modified terminal attributes */
@@ -68,12 +73,10 @@ int key_is_pressed(void) {
  *      params: none
  *      return: none
  */
-void disable_raw_terminal_mode(void) {
-    struct termios terminal;
-    /* Getting current terminal attributes */
-    tcgetattr(STDIN_FILENO, &terminal);
-    /* Enabling canonical mode (buffered input) and echoing */
-    terminal.c_lflag |= ICANON | ECHO;
-    /* Applying modified terminal attributes */
-    tcsetattr(STDIN_FILENO, TCSANOW, &terminal);
+void disable_non_blocking_terminal_mode(void) {
+    /* Have terminal attributes been overwritten? */
+    if (terminal_saved) {
+        /* Applying original terminal attributes */
+        tcsetattr(STDIN_FILENO, TCSANOW, &original_terminal);
+    }
 }

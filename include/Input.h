@@ -2,8 +2,8 @@
 #define INPUT_H
 
 
-void enable_raw_terminal_mode(void);
-void disable_raw_terminal_mode(void);
+void enable_non_blocking_terminal_mode(void);
+void disable_non_blocking_terminal_mode(void);
 int key_is_pressed(void);
 
 

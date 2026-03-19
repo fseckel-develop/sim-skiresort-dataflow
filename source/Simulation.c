@@ -56,7 +56,7 @@ void run_simulation(void) {
     /* Enabling random number generation */
     enable_random();
     /* Enabling non-blocking terminal mode */
-    enable_raw_terminal_mode();
+    enable_non_blocking_terminal_mode();
     /* Repeating until the clock reaches 10:20 pm:*/
     while (s(simulation->clock->time) <= s(t(22,20,00))) {
         /* Is key being pressed on the keyboard? */
@@ -113,8 +113,8 @@ void run_simulation(void) {
         }
     }
     /* Disabling non-blocking terminal mode */
-    disable_raw_terminal_mode();
     /* Terminating the simulation */
+    disable_non_blocking_terminal_mode();
     terminate_simulation(simulation);
 }
 

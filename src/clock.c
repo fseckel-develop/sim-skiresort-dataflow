@@ -1,0 +1,192 @@
+#include <skiresort/clock.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
+
+/*  init_clock():
+ *  Creates a clock and initializes it with the given time at normal speed.
+ *      params: time
+ *      return: none
+ */
+Clock* init_clock(const Time time) {
+    Clock* clock = calloc(1, sizeof(Clock));
+    if (!clock) {
+        fprintf(stderr, "Error in init_clock: failed to allocate memory for clock\n");
+        return NULL;
+    }
+    clock->time = time;
+    clock->speed = NORMAL;
+    clock->last_speed = NORMAL;
+    return clock;
+}
+
+
+/*  stop_clock():
+ *  Saves the current speed of the given clock and stops it from running.
+ *      params: reference to clock
+ *      return: none
+ */
+void stop_clock(Clock* clock) {
+    if (clock) {
+        clock->last_speed = clock->speed;
+        clock->speed = STOPPED;
+    }
+}
+
+
+/*  set_normal_speed():
+ *  Sets the speed of the given glock to Normal.
+ *      params: reference to clock
+ *      return: none
+ */
+void set_normal_speed(Clock* clock) {
+    if (clock) {
+        clock->speed = NORMAL;
+    }
+}
+
+
+/*  set_turbo_speed():
+ *  Sets the speed of the given glock to Turbo.
+ *      params: reference to clock
+ *      return: none
+ */
+void set_turbo_speed(Clock* clock) {
+    if (clock) {
+        clock->speed = TURBO;
+    }
+}
+
+
+/*  set_last_speed():
+ *  Resets the speed of the given before it was stopped.
+ *      params: reference to clock
+ *      return: none
+ */
+void set_last_speed(Clock* clock) {
+    if (clock && clock->speed == STOPPED) {
+        clock->speed = clock->last_speed;
+    }
+}
+
+
+/*  wait_seconds():
+ *  Suspends execution for a given number of seconds using nanosleep().
+ *  Supports fractional seconds by splitting into seconds and nanoseconds.
+ *  Note: This simple version does not handle interruptions (EINTR).
+ *      params: duration in seconds (can be fractional, e.g. 1.5)
+ *      return: None
+ */
+void wait_seconds(const double seconds) {
+    struct timespec req;
+    /* Extract the whole seconds part */
+    req.tv_sec = (time_t)seconds;
+    /* Convert the fractional part into nanoseconds (1e9 ns = 1 second) */
+    req.tv_nsec = (long)((seconds - (double)req.tv_sec) * 1000000000.0);
+    /* Suspend execution for the specified time */
+    nanosleep(&req, NULL);
+}
+
+
+/*  tick_tack():
+ *  Increments the time of the given clock by 10 seconds and waits 166667 microseconds
+ *  (1/6 of a second) at normal speed to achieve 1 simulated minute per real-time second,
+ *  or 16667 microseconds (1/60 of a second) at turbo speed to achieve 10 simulated minutes
+ *  per real-time second. Seconds are converted into full minutes and full hours, if necessary.
+ *      params: reference to clock
+ *      return: none
+ */
+void tick_tack(Clock* clock) {
+    if (clock && clock->speed != STOPPED) {
+        if (clock->speed == NORMAL) {
+            wait_seconds(0.166667);
+        }
+        else if (clock->speed == TURBO) {
+            wait_seconds(0.016667);
+        }
+        clock->time.s += 10;
+        /* Has a full minute been reached? */
+        if (clock->time.s == 60) {
+            clock->time.s = 0;
+            clock->time.min++;
+            /* Has a full hour been reached? */
+            if (clock->time.min == 60) {
+                clock->time.min = 0;
+                clock->time.h++;
+            }
+        }
+    }
+}
+
+
+/*  destroy_clock():
+ *  Frees the memory of the given clock.
+ *      params: reference to clock
+ *      return: none
+ */
+void destroy_clock(Clock* clock) {
+    if (clock) {
+        free(clock);
+    }
+}
+
+
+/*  t():
+ *  Determines a time structure in a valid time format
+ *  from the given amount of hours, minutes and seconds.
+ *      params: number of hours, minutes and seconds
+ *      return: time
+ */
+Time t(const int h, const int min, const int s) {
+    Time time;
+    /* Number of full hours = number of hours + number of full 60 minutes */
+    time.h = h + (min + s / 60) / 60;
+    /* Number of remaining minutes */
+    time.min = (min + s / 60) % 60;
+    /* Number of remaining seconds */
+    time.s = s % 60;
+    return time;
+}
+
+
+/*  add():
+ *  Adds two times by adding their hours, minutes and seconds before reformatting.
+ *      params: first time, second time
+ *      return: time
+ */
+Time add(const Time t1, const Time t2) {
+    return t(t1.h + t2.h, t1.min + t2.min, t1.s + t2.s);
+}
+
+
+/*  min():
+ *  Determines the number of full minutes from a given time.
+ *      params: time
+ *      return: number of minutes
+ */
+int min(const Time time) {
+    return 60 * time.h + time.min;
+}
+
+
+/*  s():
+ *  Determines the number of seconds from a given time.
+ *      params: time
+ *      return: number of seconds
+ */
+int s(const Time time) {
+    return 60 * min(time) + time.s;
+}
+
+
+/*  print_time():
+ *  Prints a given time to the console, respecting the XX:XX format.
+ *      params: time
+ *      return: number of seconds
+ */
+void print_time(const Time time) {
+    time.h < 10 ? printf("0%d", time.h) : printf("%2d", time.h);
+    time.min % 2 == 0 ? printf(" ") : printf(":");
+    time.min < 10 ? printf("0%d", time.min) : printf("%2d", time.min);
+}

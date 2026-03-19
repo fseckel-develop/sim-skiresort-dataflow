@@ -57,7 +57,10 @@ Person* dequeue(Queue* queue) {
     /* Is the queue not empty (and valid)? */
     if (!queue_is_empty(queue)) {
         /* Saving reference to the front node for safe queue restructuring */
-        const Node* dequeued_node = queue->front;
+        Node* dequeued_node = queue->front;
+        /* Extracting attached person for return */
+        Person* dequeued_person = dequeued_node->person;
+        dequeued_node->person = NULL;
         /* Moving the queue front to the next node */
         queue->front = queue->front->next;
         /* Is the new queue front not a node? = Is the queue now empty? */
@@ -67,7 +70,8 @@ Person* dequeue(Queue* queue) {
         }
         /* Decrementing the element counter of the queue */
         queue->size--;
-        return dequeued_node->person;
+        destroy_node(dequeued_node);
+        return dequeued_person;
     }
     return NULL;
 }

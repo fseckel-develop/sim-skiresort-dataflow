@@ -89,7 +89,8 @@ void progressing_arrivals(const Resort* resort) {
         /* Managing arrivals at bus stop, car park and hotel */
         bus_is_arriving(resort->bus_stop);
         car_is_arriving(resort->car_park);
-        walk_to_resort(resort->hotel);
+        guests_are_resting(resort->hotel);
+        guests_walk_to_ski(resort->hotel);
     }
 }
 

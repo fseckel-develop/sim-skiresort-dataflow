@@ -1,5 +1,4 @@
 #include "CarPark.h"
-#include "Probability.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -41,12 +40,7 @@ CarPark* create_car_park(Station* entry, Clock* clock) {
 void car_is_arriving(CarPark* car_park) {
     /* Is the given car park reference valid and is the car park not full? */
     if (car_park && car_park->car_count < CAR_PARK_CAPACITY) {
-        /* Pulling random integer between 1 and 100, uniformly distributed */
-        const int random = random_int_in_range(1, 100);
-        /* Is random number between 0 and an upper bound dependent on the current
-         * arrival density, being 0 at lowest density and 10 at highest density.
-         * (seemed to be considerably good rate of car arrivals while testing) */
-        if (random <= 10 * arrival_density(car_park->clock->time)) {
+        if (arrival_event_occurs(car_park->clock->time)) {
             int i = 0;
             /* Creating a new car with passengers */
             Car* arriving_car = create_car(car_park->clock);

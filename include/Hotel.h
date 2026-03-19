@@ -19,7 +19,7 @@ typedef struct Hotel {
 
 Hotel* create_hotel(Station*, Clock*);
 void fill_hotel(const Hotel*);
-void walk_to_resort(const Hotel*);
+void guests_walk_to_ski(const Hotel*);
 void guests_are_resting(const Hotel*);
 void return_to_hotel(const Hotel*);
 void set_time_to_rest(Person*);

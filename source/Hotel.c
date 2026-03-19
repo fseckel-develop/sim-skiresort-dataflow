@@ -74,18 +74,9 @@ void fill_hotel(const Hotel* hotel) {
  *      params: reference to hotel
  *      return: None
  */
-void walk_to_resort(const Hotel* hotel) {
-    /* Is the given hotel reference valid and are there guests present? */
+void guests_walk_to_ski(const Hotel* hotel) {
     if (hotel && !list_is_empty(hotel->present_guests)) {
-        /* Pulling random integer between 1 and 100, uniformly distributed */
-        const int random = random_int_in_range(1, 100);
-        /* Reducing activity duration for all resting guests */
-        guests_are_resting(hotel);
-        /* Is random number between 0 and an upper bound dependent on the current
-         * arrival density, being 0 at lowest density and 10 at highest density?
-         * (seemed to be considerably good rate of hotel arrivals while testing) */
-        if (random <= 10 * arrival_density(hotel->clock->time)) {
-            /* Preparing traversal of hotels guest list */
+        if (arrival_event_occurs(hotel->clock->time)) {
             const Node* current = hotel->present_guests->front;
             while (current) {
                 /* Has the current guest finished resting? */

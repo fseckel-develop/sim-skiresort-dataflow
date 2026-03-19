@@ -191,6 +191,20 @@ double arrival_density(const Time time) {
 }
 
 
+/*  arrival_event_occurs():
+ *  Determines whether an arrival event occurs at the current time step
+ *  based on the arrival density. Higher density increases probability.
+ *  Probability ranges from 0% to 10% for each time step of the main clock.
+ *      params: current simulation time
+ *      return: TRUE if an arrival event should occur, otherwise FALSE
+ */
+Boolean arrival_event_occurs(const Time time) {
+    const int random = random_int_in_range(1, 100);
+    const double threshold = 10.0 * arrival_density(time);
+    return random <= threshold;
+}
+
+
 /*  destroy_person():
  *  Nullifies the association to the clock and frees the memory of the given bistro.
  *      params: reference to person

@@ -80,6 +80,7 @@ void set_departure_time(Person*);
 void proceed_activity(Person*);
 Boolean activity_finished(const Person*);
 double arrival_density(Time);
+Boolean arrival_event_occurs(Time);
 void destroy_person(Person*);
 
 

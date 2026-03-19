@@ -11,7 +11,7 @@
  *      return: None
  */
 void enable_random(void) {
-    srand(time(NULL));
+    srand(time(NULL)); /* NOLINT */
 }
 
 
@@ -21,7 +21,7 @@ void enable_random(void) {
  *      return: integer value
  */
 int random_int_in_range(const int min, const int max) {
-    return rand() % (max - min + 1) + min;
+    return rand() % (max - min + 1) + min; /* NOLINT */
 }
 
 
@@ -31,7 +31,17 @@ int random_int_in_range(const int min, const int max) {
  *      return: double value
  */
 double random_double_in_range(const double min, const double max) {
-    return (double) rand() / (double) RAND_MAX * (max - min) + min;
+    return (double) rand() / (double) RAND_MAX * (max - min) + min; /* NOLINT */
+}
+
+
+/*  random_unit_open_interval():
+ *  Determines a random floating point value within the range (0, 1).
+ *      params: none
+ *      return: double value
+ */
+double random_unit_open_interval(void) {
+    return ((double) rand() + 1.0) / ((double) RAND_MAX + 2.0); /* NOLINT */
 }
 
 
@@ -53,9 +63,9 @@ double box_muller_transform(const double u1, const double u2) {
  *      return: double value
  */
 double random_normal(const double mean, const double sigma) {
-    /* Pulling two uniformly distributed numbers within the range [0, 1] */
-    const double u1 = random_double_in_range(0.0, 1.0);
-    const double u2 = random_double_in_range(0.0, 1.0);
+    /* Pulling two uniformly distributed numbers within the range (0, 1) */
+    const double u1 = random_unit_open_interval();
+    const double u2 = random_unit_open_interval();
     /* Calculating normally distributed number using the Box-Muller transform */
     return mean + box_muller_transform(u1, u2) * sigma;
 }
@@ -72,8 +82,8 @@ double random_normal_with_bounds(const double mean, const double sigma, const do
     /* Repeating until the result is within the given range [min, max]: */
     do {
         /* Pulling two uniformly distributed numbers within the range [0, 1] */
-        const double u1 = random_double_in_range(0.0, 1.0);
-        const double u2 = random_double_in_range(0.0, 1.0);
+        const double u1 = random_unit_open_interval();
+        const double u2 = random_unit_open_interval();
         /* Calculating normally distributed number using the Box-Muller transform */
         result = mean + box_muller_transform(u1, u2) * sigma;
     } while (result < min || max < result);

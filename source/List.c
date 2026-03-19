@@ -30,11 +30,14 @@ void append_list(List* list, Person* person) {
     if (list && person) {
         /* Creating new node associated with the given person */
         Node* new_node = create_node(person);
+        if (!new_node) {
+            return;
+        }
         /* Is the list front already existing? */
         if (list->front) {
             /* Setting the next of the new node to be the list front */
             new_node->next = list->front;
-            /* Setting the previous of the front node to be the new node */
+            /* Setting the previous node of the front node to be the new node */
             list->front->prev = new_node;
         }
         /* Updating the list front to be the newly added node */

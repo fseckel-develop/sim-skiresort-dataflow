@@ -31,6 +31,9 @@ void enqueue(Queue* queue, Person* person) {
     if (queue && person) {
         /* Creating new node associated with the given person */
         Node* new_node = create_node(person);
+        if (!new_node) {
+            return;
+        }
         /* Incrementing the element counter of the queue */
         queue->size++;
         /* Is the queues rear not existent? = Is the queue empty? */

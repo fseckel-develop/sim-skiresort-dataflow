@@ -11,7 +11,6 @@ Node* create_node(Person* person) {
     if (person) {
         Node* node = calloc(1, sizeof(Node));
         if (node) {
-            /* Associating the given person with the new node */
             node->person = person;
             return node;
         }
@@ -26,11 +25,8 @@ Node* create_node(Person* person) {
  *      return: none
  */
 void destroy_node(Node* node) {
-    /* Is the given node reference valid? */
     if (node) {
-        /* Destroying associated person */
         destroy_person(node->person);
-        /* Freeing memory of the given node */
         free(node);
     }
 }

@@ -11,24 +11,20 @@
  *      return: reference to resort (or NULL)
  */
 Resort* create_resort(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
-        /* Allocating memory for a Resort struct */
         Resort* resort = calloc(1, sizeof(Resort));
-        /* Has the memory allocation been unsuccessful? */
         if (!resort) {
             fprintf(stderr, "Error in create_resort: failed to allocate memory for resort\n");
             return NULL;
         }
-        /* Associating resort with the given clock */
         resort->clock = clock;
-        /* Setting up lift at resort */
+
         resort->lift = create_lift(clock);
-        /* Setting up stations at resort, connected to the lift */
+
         resort->valley_station = create_station(VALLEY_STATION, resort->lift);
         resort->middle_station = create_station(MIDDLE_STATION, resort->lift);
         resort->summit_station = create_station(SUMMIT_STATION, resort->lift);
-        /* Setting up lift queues at resort, connected to the stations */
+
         resort->lift_queue_valley = create_lift_queue(VALLEY_LIFT_QUEUE, resort->valley_station);
         resort->lift_queue_middle_up = create_lift_queue(MIDDLE_LIFT_QUEUE_UP, resort->middle_station);
         resort->lift_queue_middle_down = create_lift_queue(MIDDLE_LIFT_QUEUE_DOWN, resort->middle_station);
@@ -43,12 +39,11 @@ Resort* create_resort(Clock* clock) {
         resort->bus_stop = create_bus_stop(resort->valley_station, clock);
         resort->car_park = create_car_park(resort->valley_station, clock);
         resort->hotel = create_hotel(resort->valley_station, clock);
-        /* Setting up bistro at resort, connected to middle station */
+
         resort->bistro = create_bistro(resort->middle_station);
-        /* Have all resources of the resort been properly set up? */
+
         if (!resort_is_valid(resort)) {
             fprintf(stderr, "Error in create_resort: one or more invalid resources for resort\n");
-            /* Destroying resort cause of incorrect resources */
             destroy_resort(resort);
             return NULL;
         }
@@ -65,9 +60,7 @@ Resort* create_resort(Clock* clock) {
  *      return: TRUE or FALSE
  */
 Boolean resort_is_valid(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Logical conjunction of all resort resources, testing for their validity */
         return resort->lift && resort->valley_station && resort->middle_station && resort->summit_station
         && resort->lift_queue_valley && resort->lift_queue_middle_up && resort->lift_queue_middle_down
         && resort->lift_queue_summit && resort->slope_b1 && resort->slope_r1 && resort->slope_b2
@@ -84,9 +77,7 @@ Boolean resort_is_valid(const Resort* resort) {
  *      return: none
  */
 void progressing_arrivals(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Managing arrivals at bus stop, car park and hotel */
         bus_is_arriving(resort->bus_stop);
         car_is_arriving(resort->car_park);
         guests_are_resting(resort->hotel);
@@ -101,7 +92,6 @@ void progressing_arrivals(const Resort* resort) {
  *      return: none
  */
 void progressing_lift_exits(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Updating gondolas at every station */
         set_gondolas(resort->valley_station, resort->lift);
@@ -121,7 +111,6 @@ void progressing_lift_exits(const Resort* resort) {
  *      return: none
  */
 void progressing_ski_slopes(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Progressing skiers at every slope */
         people_are_skiing(resort->slope_b1);
@@ -145,11 +134,8 @@ void progressing_ski_slopes(const Resort* resort) {
  *      return: none
  */
 void progressing_bistro(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Progressing customers at the bistro */
         customers_are_eating(resort->bistro);
-        /* Welcoming new customers to the bistro */
         welcome_customers(resort->bistro);
     }
 }
@@ -161,7 +147,6 @@ void progressing_bistro(const Resort* resort) {
  *      return: none
  */
 void progressing_lift_queues(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Letting people fall in line at every lift queue */
         enqueue_people(resort->lift_queue_valley);
@@ -188,7 +173,6 @@ void progressing_lift_queues(const Resort* resort) {
  *      return: none
  */
 void progressing_departures(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Managing departures via the bus stop */
         return_to_bus_stop(resort->bus_stop);
@@ -208,7 +192,6 @@ void progressing_departures(const Resort* resort) {
  *      return: none
  */
 void clean_up_resort(const Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Moving skiers from all slopes to the valley station */
         collect_skiers_with_snowmobile(resort->slope_b1, resort->valley_station);
@@ -229,7 +212,6 @@ void clean_up_resort(const Resort* resort) {
  */
 int current_visitor_count(const Resort* resort) {
     int visitor_count = 0;
-    /* Is the given resort reference valid? */
     if (resort) {
         /* Increasing visitor count by person count of all stations */
         visitor_count += resort->valley_station->people_at_station->size;
@@ -264,9 +246,7 @@ int current_visitor_count(const Resort* resort) {
  */
 int total_ten_tickets(const Resort* resort) {
     int ticket_count = 0;
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Adding up ten-ticket counts of all lift queues */
         ticket_count += resort->lift_queue_valley->sold_ten_tickets;
         ticket_count += resort->lift_queue_middle_up->sold_ten_tickets;
         ticket_count += resort->lift_queue_middle_down->sold_ten_tickets;
@@ -283,9 +263,7 @@ int total_ten_tickets(const Resort* resort) {
  */
 int total_day_tickets(const Resort* resort) {
     int ticket_count = 0;
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Adding up day-ticket counts of all lift queues */
         ticket_count += resort->lift_queue_valley->sold_day_tickets;
         ticket_count += resort->lift_queue_middle_up->sold_day_tickets;
         ticket_count += resort->lift_queue_middle_down->sold_day_tickets;
@@ -302,9 +280,7 @@ int total_day_tickets(const Resort* resort) {
  */
 int total_slope_entries(const Resort* resort) {
     int entry_count = 0;
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Adding up entry counts of all slopes */
         entry_count += resort->slope_b1->total_entries;
         entry_count += resort->slope_r1->total_entries;
         entry_count += resort->slope_b2->total_entries;
@@ -321,12 +297,10 @@ int total_slope_entries(const Resort* resort) {
  *      return: none
  */
 void print_resort_state(const Resort* resort) {
-    /* Is the given resort reference not valid? */
     if (!resort) {
         return;
     }
     system("clear");
-    /* Printing the graphical elements line by line, filling in the numerical resort information */
     printf("  Skiers at Resort: %4d              ,====================,                                          O=OO=OO=O\n",
         current_visitor_count(resort));
     printf("  Sold Ten-Tickets: %4d      ,-------|   SUMMIT STATION   |-------,-----------------,-----------,--[}0   ,---0{]\n",
@@ -411,11 +385,8 @@ void print_resort_state(const Resort* resort) {
  *      return: none
  */
 void destroy_resort(Resort* resort) {
-    /* Is the given resort reference valid? */
     if (resort) {
-        /* Breaking association to the clock */
         resort->clock = NULL;
-        /* Destroying all resources of the resort */
         destroy_lift(resort->lift);
         destroy_station(resort->valley_station);
         destroy_station(resort->middle_station);
@@ -433,7 +404,6 @@ void destroy_resort(Resort* resort) {
         destroy_car_park(resort->car_park);
         destroy_hotel(resort->hotel);
         destroy_bistro(resort->bistro);
-        /* Freeing memory of the given resort */
         free(resort);
     }
 }

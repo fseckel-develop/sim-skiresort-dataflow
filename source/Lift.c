@@ -15,23 +15,17 @@
  *      return: reference to lift (or NULL)
  */
 Lift* create_lift(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
         int i;
-        /* Allocating memory for a Lift struct */
         Lift* lift = calloc(1, sizeof(Lift));
-        /* Has the memory allocation been unsuccessful? */
         if (!lift) {
             fprintf(stderr, "Error in create_lift: failed to allocate memory for lift\n");
             return NULL;
         }
-        /* Associating lift with the given clock */
         lift->clock = clock;
-        /* Creating circular linked list of gondolas */
         for (i = 0; i < TOTAL_GONDOLAS; i++) {
             add_gondola(lift);
         }
-        /* Setting initial station gondolas */
         init_station_gondolas(lift);
         return lift;
     }
@@ -53,11 +47,9 @@ void add_gondola(Lift* lift) {
      * follower of the current valley entry, then set to the valley entry itself and connected
      * to the valley exit as its follower, maintaining the circle closure. */
 
-    /* Is the given lift reference valid? */
     if (lift) {
-        /* Creating new gondola */
         Gondola* new_gondola = create_gondola();
-        /* Is valley entry gondola already set? = Is it not the first gondola being is added? */
+        /* Is valley entry gondola already set? = Is it not the first gondola being added? */
         if (lift->valley_entry) {
             /* Setting new gondola as the follower of valley entry gondola */
             lift->valley_entry->follower = new_gondola;
@@ -78,41 +70,29 @@ void add_gondola(Lift* lift) {
  *  needs 4 minutes from middle downward to valley exit, which is equal to 4 * 60s = 240s.
  *  Every 10 seconds a new gondola arrives at a station, therefore 240s / 10s = 24 gondolas
  *  are passing before the gondola in question is arriving at the station. So when gondola #1
- *  is at valley exit, then gondola #25 is located at middle downwards.
+ *  is at valley exit, then gondola #25 is located at middle station, downwards direction.
  *  Position of other initial station gondolas determined the same way.
  *      params: reference to lift
  *      return: none
  */
 void init_station_gondolas(Lift* lift) {
-    /* Is the given lift reference valid? */
     if (lift) {
-        /* Preparing traversal of lift (circular list of gondolas) */
         Gondola* current = lift->valley_exit;
         int gondola_counter = 1;
         while (gondola_counter <= INIT_POS_MIDDLE_UPWARD) {
-            /* Is the current gondola the 25th gondola? */
             if (gondola_counter == INIT_POS_MIDDLE_DOWNWARD) {
-                /* Marking current gondola as the downward gondola at middle station */
                 lift->middle_downward = current;
             }
-            /* Is the current gondola the 55th gondola? */
             else if (gondola_counter == INIT_POS_SUMMIT_ENTRY) {
-                /* Marking current gondola as the entry gondola at summit station */
                 lift->summit_entry = current;
             }
-            /* Is the current gondola the 56th gondola? */
             else if (gondola_counter == INIT_POS_SUMMIT_EXIT) {
-                /* Marking current gondola as the exit gondola at summit station */
                 lift->summit_exit = current;
             }
-            /* Is the current gondola the 86th gondola? */
             else if (gondola_counter == INIT_POS_MIDDLE_UPWARD) {
-                /* Marking current gondola as the upward gondola at middle station */
                 lift->middle_upward = current;
             }
-            /* Progressing lift traversal */
             current = current->follower;
-            /* Incrementing gondola_counter */
             gondola_counter++;
         }
     }
@@ -126,7 +106,6 @@ void init_station_gondolas(Lift* lift) {
  *      return: none
  */
 void move_lift(Lift* lift) {
-    /* Is the given lift reference valid? */
     if (lift) {
         /* Is the lift currently moving? */
         if (s(t(9,0,0)) <= s(lift->clock->time) && s(lift->clock->time) <= s(t(20,0,0))) {
@@ -149,17 +128,12 @@ void move_lift(Lift* lift) {
  */
 int passengers_on_lift_between(const Gondola* ending_gondola, const Gondola* starting_gondola) {
     int counter = 0;
-    /* Are the given gondola references valid? */
     if (ending_gondola && starting_gondola) {
-        /* Preparing traversal of lift segment */
         const Gondola* current = starting_gondola;
         do {
-            /* Increase counter by the passenger count of the current gondola */
             counter += current->passenger_count;
-            /* Progressing lift traversal */
             current = current->follower;
         } while (current != ending_gondola);
-        /* Continuing traversal until the end of the lift segment is reached? */
     }
     return counter;
 }
@@ -172,23 +146,16 @@ int passengers_on_lift_between(const Gondola* ending_gondola, const Gondola* sta
  *      return: none
  */
 void destroy_lift(Lift* lift) {
-    /* Is the given lift reference valid? */
     if (lift) {
-        /* Preparing traversal of lift (circular list of gondolas) */
         Gondola* current = lift->valley_exit;
         /* Cutting the circular list after the last traversed gondola */
         lift->valley_entry->follower = NULL;
         while (current) {
-            /* Saving reference to current gondola */
             Gondola* temp = current;
-            /* Progressing lift traversal for safe gondola destruction */
             current = current->follower;
-            /* Destroying temporary saved gondola */
             destroy_gondola(temp);
         }
-        /* Breaking association with clock */
         lift->clock = NULL;
-        /* Freeing memory of the given lift */
         free(lift);
     }
 }

@@ -10,16 +10,12 @@
  *      return: none
  */
 Clock* init_clock(const Time time) {
-    /* Allocating memory for a Clock struct */
     Clock* clock = calloc(1, sizeof(Clock));
-    /* Has the memory allocation been unsuccessful? */
     if (!clock) {
         fprintf(stderr, "Error in init_clock: failed to allocate memory for clock\n");
         return NULL;
     }
-    /* Setting time of the clock to the given time */
     clock->time = time;
-    /* Clock initially runs at normal speed */
     clock->speed = NORMAL;
     clock->last_speed = NORMAL;
     return clock;
@@ -32,11 +28,8 @@ Clock* init_clock(const Time time) {
  *      return: none
  */
 void stop_clock(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
-        /* Saving the current speed of the clock */
         clock->last_speed = clock->speed;
-        /* Stopping the clock */
         clock->speed = STOPPED;
     }
 }
@@ -48,9 +41,7 @@ void stop_clock(Clock* clock) {
  *      return: none
  */
 void set_normal_speed(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
-        /* Setting the clocks speed to Normal */
         clock->speed = NORMAL;
     }
 }
@@ -62,9 +53,7 @@ void set_normal_speed(Clock* clock) {
  *      return: none
  */
 void set_turbo_speed(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
-        /* Setting the clocks speed to Turbo */
         clock->speed = TURBO;
     }
 }
@@ -76,9 +65,7 @@ void set_turbo_speed(Clock* clock) {
  *      return: none
  */
 void set_last_speed(Clock* clock) {
-    /* Is the given clock reference valid and is the clock currently not running? */
     if (clock && clock->speed == STOPPED) {
-        /* Setting the clocks speed to the last saved speed */
         clock->speed = clock->last_speed;
     }
 }
@@ -111,30 +98,21 @@ void wait_seconds(const double seconds) {
  *      return: none
  */
 void tick_tack(Clock* clock) {
-    /* Is the given clock reference valid and is the clock running? */
     if (clock && clock->speed != STOPPED) {
-        /* Does the clock currently run at normal speed? */
         if (clock->speed == NORMAL) {
-            /* Waiting 1/6 of a second = 166667 microseconds */
             wait_seconds(0.166667);
         }
         else if (clock->speed == TURBO) {
-            /* Waiting 1/60 of a second = 16667 microseconds */
             wait_seconds(0.016667);
         }
-        /* Progressing clock time by 10 seconds */
         clock->time.s += 10;
         /* Has a full minute been reached? */
         if (clock->time.s == 60) {
-            /* Resetting number of seconds */
             clock->time.s = 0;
-            /* Incrementing number of minutes */
             clock->time.min++;
             /* Has a full hour been reached? */
             if (clock->time.min == 60) {
-                /* Resetting number of minutes */
                 clock->time.min = 0;
-                /* Incrementing number of hours */
                 clock->time.h++;
             }
         }
@@ -148,9 +126,7 @@ void tick_tack(Clock* clock) {
  *      return: none
  */
 void destroy_clock(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
-        /* Freeing memory of the given clock */
         free(clock);
     }
 }

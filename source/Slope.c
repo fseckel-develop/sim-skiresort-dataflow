@@ -12,29 +12,20 @@
  *      return: reference to slope (or NULL)
  */
 Slope* create_slope(const Position id, Station* entry, Station* finish, const int fastest, const int average) {
-    /* Are the given station references valid? */
     if (entry && finish) {
-        /* Allocating memory for a Slope struct */
         Slope* slope = calloc(1, sizeof(Slope));
-        /* Has the memory allocation been unsuccessful? */
         if (!slope) {
             fprintf(stderr, "Error in create_slope: failed to allocate memory for slope\n");
             return NULL;
         }
-        /* Setting the slope id to the given id */
         slope->id = id;
-        /* Associating slope with the given stations */
         slope->entry = entry;
         slope->finish = finish;
-        /* Setting the characteristic skiing times for the slope */
         slope->fastest = fastest;
         slope->average = average;
-        /* Creating a list for skiers on the slope */
         slope->skiers = create_list();
-        /* Has the list creation been unsuccessful? */
         if (!slope->skiers) {
             fprintf(stderr, "Error in create_slope: failed to create list for skiers\n");
-            /* Destroying slope cause of incorrect resources */
             destroy_slope(slope);
             return NULL;
         }
@@ -52,28 +43,18 @@ Slope* create_slope(const Position id, Station* entry, Station* finish, const in
  *      return: none
  */
 void let_people_enter(Slope* slope) {
-    /* Is the given slope reference valid? */
     if (slope) {
-        /* Preparing traversal of entry stations person list */
         const Node* current = slope->entry->people_at_station->front;
         while (current) {
-            /* Does the current person want to enter the slope? */
             if (current->person->going_to == slope->id) {
-                /* Saving reference to current person */
                 Person* new_skier = current->person;
-                /* Progressing list traversal for safe element removal */
                 current = current->next;
-                /* Removing new skier from entry stations person list */
                 remove_person(slope->entry->people_at_station, new_skier);
-                /* Setting time to ski for new skier */
                 set_time_to_ski(slope, new_skier);
-                /* Adding new skier to slopes skier list */
                 append_list(slope->skiers, new_skier);
-                /* Incrementing the slopes entry count */
                 slope->total_entries++;
                 continue;
             }
-            /* Progressing list traversal */
             current = current->next;
         }
     }
@@ -88,11 +69,8 @@ void let_people_enter(Slope* slope) {
  *      return: none
  */
 void set_time_to_ski(const Slope* slope, Person* person) {
-    /* Are the given slope reference and person reference valid? */
     if (slope && person) {
-        /* Computing random log-normally distributed skiing duration respecting the slopes statistics */
         const int ski_minutes = (int) random_log_normal(slope->fastest, slope->average, 1.0);
-        /* Setting the skiing duration as the persons activity duration */
         person->activity_duration = t(00,ski_minutes,00);
     }
 }
@@ -105,26 +83,17 @@ void set_time_to_ski(const Slope* slope, Person* person) {
  *      return: none
  */
 void people_are_skiing(const Slope* slope) {
-    /* Is the given slope reference valid? */
     if (slope) {
-        /* Preparing traversal of slopes skier list */
         const Node* current = slope->skiers->front;
         while (current) {
-            /* Reducing skiing duration for the current skier */
             proceed_activity(current->person);
-            /* Has the current skier finished the slope? */
             if (activity_finished(current->person)) {
-                /* Saving reference of current skier */
                 Person* finished_skier = current->person;
-                /* Progressing list traversal for safe element removal */
                 current = current->next;
-                /* Removing finished skier from slopes skier list */
                 remove_person(slope->skiers, finished_skier);
-                /* Moving finished skier to the finish station */
                 go_to_station(slope->finish, finished_skier);
                 continue;
             }
-            /* Progressing list traversal */
             current = current->next;
         }
     }
@@ -137,20 +106,13 @@ void people_are_skiing(const Slope* slope) {
  *      return: none
  */
 void collect_skiers_with_snowmobile(const Slope* slope, const Station* drop_off) {
-    /* Are the given slope reference and station reference valid? */
     if (slope && drop_off) {
-        /* Preparing traversal of slopes skier list */
         const Node* current = slope->skiers->front;
         while (current) {
-            /* Saving reference of current skier */
             Person* late_skier = current->person;
-            /* Progressing list traversal for safe element removal */
             current = current->next;
-            /* Removing late skier from slopes skier list */
             remove_person(slope->skiers, late_skier);
-            /* Directing late skier to the resort part they arrived at */
             late_skier->going_to = late_skier->origin;
-            /* Moving late skier to the drop-off station */
             go_to_station(drop_off, late_skier);
         }
     }
@@ -164,14 +126,10 @@ void collect_skiers_with_snowmobile(const Slope* slope, const Station* drop_off)
  *      return: none
  */
 void destroy_slope(Slope* slope) {
-    /* Is the given slope reference valid? */
     if (slope) {
-        /* Breaking associating with entry and finish station */
         slope->entry = NULL;
         slope->finish = NULL;
-        /* Destroying list of skiers */
         destroy_list(slope->skiers);
-        /* Freeing memory of the given slope */
         free(slope);
     }
 }

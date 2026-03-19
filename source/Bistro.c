@@ -10,21 +10,16 @@
  *      return: reference to bistro (or NULL)
  */
 Bistro* create_bistro(Station* entry) {
-    /* Is the given station reference valid? */
     if (entry) {
         Bistro* bistro = calloc(1, sizeof(Bistro));
         if (!bistro) {
             fprintf(stderr, "Error in create_bistro: failed to allocate memory for bistro\n");
             return NULL;
         }
-        /* Associating bistro with the given station */
         bistro->entry = entry;
-        /* Creating a list for bistro customers */
         bistro->customers = create_list();
-        /* Has the list creation been unsuccessful? */
         if (!bistro->customers) {
             fprintf(stderr, "Error in create_bistro: failed to create list for customers\n");
-            /* Destroying bistro cause of incorrect resources */
             destroy_bistro(bistro);
             return NULL;
         }
@@ -42,34 +37,22 @@ Bistro* create_bistro(Station* entry) {
  *      return: none
  */
 void welcome_customers(const Bistro* bistro) {
-    /* Is the given bistro reference valid? */
     if (bistro) {
-        /* Preparing traversal of entry stations person list */
         const Node* current = bistro->entry->people_at_station->front;
         while (current) {
-            /* Does the current person want to enter the bistro? */
             if (current->person->going_to == BISTRO) {
-                /* Is the bistro currently open? */
                 if (bistro_is_open(current->person->clock->time)) {
-                    /* Saving reference to current person */
                     Person* new_customer = current->person;
-                    /* Progressing list traversal for safe element removal */
                     current = current->next;
-                    /* Removing new customer from entry stations person list */
                     remove_person(bistro->entry->people_at_station, new_customer);
-                    /* Setting time to eat for new customer */
                     set_time_to_eat(new_customer);
-                    /* Adding new customer to bistros customer list */
                     append_list(bistro->customers, new_customer);
                 }
-                /* Bistro is currently closed */
                 else {
-                    /* Redirecting current person at entry station */
                     bistro->entry->direct_person(current->person);
                 }
                 continue;
             }
-            /* Progressing list traversal */
             current = current->next;
         }
     }
@@ -94,9 +77,7 @@ Boolean bistro_is_open(const Time time) {
  *      return: none
  */
 void set_time_to_eat(Person* person) {
-    /* Is the given person reference valid? */
     if (person) {
-        /* Setting the persons activity duration between 2 min and 15 min, uniformly distributed */
         person->activity_duration = t(00,random_int_in_range(2, 15),00);
     }
 }
@@ -109,26 +90,18 @@ void set_time_to_eat(Person* person) {
  *      return: none
  */
 void customers_are_eating(const Bistro* bistro) {
-    /* Is the given bistro reference valid? */
     if (bistro) {
-        /* Preparing traversal of bistros customer list */
         const Node* current = bistro->customers->front;
         while (current) {
-            /* Reducing eating duration for the current customer */
             proceed_activity(current->person);
             /* Has the current customer finished eating? */
             if (activity_finished(current->person)) {
-                /* Saving reference of current customer */
                 Person* finished_customer = current->person;
-                /* Progressing list traversal for safe element removal */
                 current = current->next;
-                /* Removing finished customer from bistros customer list */
                 remove_person(bistro->customers, finished_customer);
-                /* Moving finished customer to the entry station */
                 go_to_station(bistro->entry, finished_customer);
                 continue;
             }
-            /* Progressing list traversal */
             current = current->next;
         }
     }
@@ -142,13 +115,8 @@ void customers_are_eating(const Bistro* bistro) {
  *      return: none
  */
 void destroy_bistro(Bistro* bistro) {
-    /* Is the given bistro reference valid? */
     if (bistro) {
-        /* Breaking association with entry station */
-        bistro->entry = NULL;
-        /* Destroying list of customers */
         destroy_list(bistro->customers);
-        /* Freeing memory of the given bistro */
         free(bistro);
     }
 }

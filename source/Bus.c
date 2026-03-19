@@ -10,25 +10,19 @@
  *      return: reference to bus (or NULL)
  */
 Bus* create_bus(Clock* clock) {
-    /* Is the given clock reference valid? */
     if (clock) {
         Bus* bus = calloc(1, sizeof(Bus));
         if (!bus) {
             fprintf(stderr, "Error in create_bus: failed to allocate memory for bus\n");
             return NULL;
         }
-        /* Setting initial passenger count depending on current time */
         bus->passenger_count = init_passenger_count(clock->time);
-        /* Creating a list for car passengers */
         bus->passengers = create_list();
-        /* Has the list creation been unsuccessful? */
         if (!bus->passengers) {
             fprintf(stderr, "Error in create_bus: failed to create list of passengers\n");
-            /* Destroying bus cause of incorrect resources */
             destroy_bus(bus);
             return NULL;
         }
-        /* Filling bus with passengers */
         fill_bus(bus, clock);
         return bus;
     }
@@ -42,7 +36,6 @@ Bus* create_bus(Clock* clock) {
  *      return: number of passengers
  */
 int init_passenger_count(const Time time) {
-    /* Are their no arrivals at this time? */
     if (arrival_density(time) == 0.0) {
         return 0;
     }
@@ -58,14 +51,10 @@ int init_passenger_count(const Time time) {
  *      return: none
  */
 void fill_bus(const Bus* bus, Clock* clock) {
-    /* Are the given bus reference and clock reference valid? */
     if (bus) {
         int i;
-        /* Repeating for every passenger of the bus: */
         for (i = 0; i < bus->passenger_count; i++) {
-            /* Creating new person as passenger of the bus */
             Person* new_passenger = create_person(BUS_STOP, clock);
-            /* Adding new passenger to bus passenger list */
             append_list(bus->passengers, new_passenger);
         }
     }
@@ -78,11 +67,8 @@ void fill_bus(const Bus* bus, Clock* clock) {
  *      return: reference to person (or NULL)
  */
 Person* leave_bus(const Bus* bus) {
-    /* Is the given bus reference valid and is the bus not empty? */
     if (bus && !list_is_empty(bus->passengers)) {
-        /* Saving reference to first passenger of list for return */
         Person* new_skier = bus->passengers->front->person;
-        /* Removing passenger from bus passenger list */
         remove_person(bus->passengers, new_skier);
         return new_skier;
     }
@@ -96,7 +82,6 @@ Person* leave_bus(const Bus* bus) {
  *      return: TRUE or FALSE
  */
 Boolean bus_is_full(const Bus* bus) {
-    /* Is the given bus reference valid? */
     if (bus) {
         return bus->passengers->size == BUS_CAPACITY;
     }
@@ -110,9 +95,7 @@ Boolean bus_is_full(const Bus* bus) {
  *      return: TRUE or FALSE
  */
 Boolean bus_is_empty(const Bus* bus) {
-    /* Is the given bus reference valid? */
     if (bus) {
-        /* Is the bus passenger list empty? */
         return list_is_empty(bus->passengers);
     }
     return FALSE;
@@ -125,11 +108,8 @@ Boolean bus_is_empty(const Bus* bus) {
  *      return: none
  */
 void destroy_bus(Bus* bus) {
-    /* Is the given bus reference valid? */
     if (bus) {
-        /* Destroying list of passengers */
         destroy_list(bus->passengers);
-        /* Freeing memory of the given bus */
         free(bus);
     }
 }

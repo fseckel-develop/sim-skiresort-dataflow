@@ -111,12 +111,12 @@ void enqueue_people(LiftQueue* lift_queue) {
 /*  lift_is_open():
  *  Checks if people can enter the lift at a given time. To ensure that lift
  *  passengers will not get stuck on the lift and can reach any lift exit, the
- *  last entry time is set to 7:10 pm, 9 minutes before the lift stops moving.
+ *  last entry time is set to 7:51 pm, 9 minutes before the lift stops moving.
  *      params: time
  *      return: TRUE or FALSE
  */
 Boolean lift_is_open(const Time time) {
-    return s(t(9,0,0)) <= s(time) && s(time) <= s(t(19,1,0));
+    return s(t(9,0,0)) <= s(time) && s(time) <= s(t(19,51,0));
 }
 
 

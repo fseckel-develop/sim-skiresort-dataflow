@@ -47,7 +47,7 @@ int init_passenger_count(const Time time) {
         return 0;
     }
     /* Passenger count normally distributed with mean between 0.0 and 47.0 (sigma = 2.0) */
-    return (int) random_normal_with_bounds(47.0 * arrival_density(time), 2.0, 0.0, 50.0);
+    return (int) random_normal_with_bounds(47.0 * arrival_density(time), 2.0, 0.0, BUS_CAPACITY);
 }
 
 
@@ -98,8 +98,7 @@ Person* leave_bus(const Bus* bus) {
 Boolean bus_is_full(const Bus* bus) {
     /* Is the given bus reference valid? */
     if (bus) {
-        /* Has the bus reached its full capacity? */
-        return bus->passengers->size == 50;
+        return bus->passengers->size == BUS_CAPACITY;
     }
     return FALSE;
 }

@@ -1,5 +1,15 @@
-#ifndef TRACK_H
-#define TRACK_H
+#ifndef SLOPE_H
+#define SLOPE_H
+#define B1_FASTEST  3
+#define B1_AVERAGE 11
+#define R1_FASTEST  3
+#define R1_AVERAGE 10
+#define B2_FASTEST  5
+#define B2_AVERAGE 21
+#define R2_FASTEST  4
+#define R2_AVERAGE 19
+#define S1_FASTEST  9
+#define S1_AVERAGE 34
 #include "Station.h"
 
 
@@ -29,4 +39,4 @@ void collect_skiers_with_snowmobile(const Slope*, const Station*);
 void destroy_slope(Slope*);
 
 
-#endif /* TRACK_H */
+#endif /* SLOPE_H */

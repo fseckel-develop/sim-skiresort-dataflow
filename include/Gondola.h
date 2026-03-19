@@ -1,16 +1,17 @@
 #ifndef GONDOLA_H
 #define GONDOLA_H
+#define GONDOLA_CAPACITY 4
 #include "Person.h"
 
 
 /*  Attributes of Gondola:
  *   - number of passengers
- *   - array of 4 references to sitting persons
+ *   - array of references to sitting persons
  *   - reference to the following gondola
  */
 typedef struct Gondola {
     int passenger_count;
-    Person* seat[4];
+    Person* seat[GONDOLA_CAPACITY];
     struct Gondola* follower;
 } Gondola;
 

@@ -1,5 +1,6 @@
-#ifndef CARPARK_H
-#define CARPARK_H
+#ifndef CAR_PARK_H
+#define CAR_PARK_H
+#define CAR_PARK_CAPACITY 50
 #include "Station.h"
 #include "Car.h"
 
@@ -8,13 +9,13 @@
  *   - reference to resort station at the car park
  *   - reference to the main clock
  *   - number of parked cars
- *   - array of 50 references to parked cars
+ *   - array of references to parked cars
  */
 typedef struct CarPark {
     Station* entry;
     Clock* clock;
     int car_count;
-    Car* parked_cars[50];
+    Car* parked_cars[CAR_PARK_CAPACITY];
 } CarPark;
 
 
@@ -27,4 +28,4 @@ void cars_are_departing(CarPark*);
 void destroy_car_park(CarPark*);
 
 
-#endif /* CARPARK_H */
+#endif /* CAR_PARK_H */

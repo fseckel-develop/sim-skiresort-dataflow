@@ -1,5 +1,6 @@
 #ifndef LIFT_H
 #define LIFT_H
+#define TOTAL_GONDOLAS 110
 #include "Gondola.h"
 
 

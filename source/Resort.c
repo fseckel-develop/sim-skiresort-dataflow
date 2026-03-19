@@ -33,13 +33,13 @@ Resort* create_resort(Clock* clock) {
         resort->lift_queue_middle_up = create_lift_queue(MIDDLE_LIFT_QUEUE_UP, resort->middle_station);
         resort->lift_queue_middle_down = create_lift_queue(MIDDLE_LIFT_QUEUE_DOWN, resort->middle_station);
         resort->lift_queue_summit = create_lift_queue(SUMMIT_LIFT_QUEUE, resort->summit_station);
-        /* Setting up slopes at resort, connected to stations, with fastest and average skiing times */
-        resort->slope_b1 = create_slope(SLOPE_B1, resort->middle_station, resort->valley_station, 3, 11);
-        resort->slope_r1 = create_slope(SLOPE_R1, resort->middle_station, resort->valley_station, 3, 10);
-        resort->slope_b2 = create_slope(SLOPE_B2, resort->summit_station, resort->middle_station, 5, 21);
-        resort->slope_r2 = create_slope(SLOPE_R2, resort->summit_station, resort->middle_station, 4, 19);
-        resort->slope_s1 = create_slope(SLOPE_S1, resort->summit_station, resort->valley_station, 9, 34);
-        /* Setting up means for skiers arrival at resort, all connected to valley station */
+
+        resort->slope_b1 = create_slope(SLOPE_B1, resort->middle_station, resort->valley_station, B1_FASTEST, B1_AVERAGE);
+        resort->slope_r1 = create_slope(SLOPE_R1, resort->middle_station, resort->valley_station, R1_FASTEST, R1_AVERAGE);
+        resort->slope_b2 = create_slope(SLOPE_B2, resort->summit_station, resort->middle_station, B2_FASTEST, B2_AVERAGE);
+        resort->slope_r2 = create_slope(SLOPE_R2, resort->summit_station, resort->middle_station, R2_FASTEST, R2_AVERAGE);
+        resort->slope_s1 = create_slope(SLOPE_S1, resort->summit_station, resort->valley_station, S1_FASTEST, S1_AVERAGE);
+
         resort->bus_stop = create_bus_stop(resort->valley_station, clock);
         resort->car_park = create_car_park(resort->valley_station, clock);
         resort->hotel = create_hotel(resort->valley_station, clock);

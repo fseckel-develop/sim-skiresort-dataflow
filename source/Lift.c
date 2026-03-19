@@ -1,3 +1,7 @@
+#define INIT_POS_MIDDLE_DOWNWARD 25
+#define INIT_POS_SUMMIT_ENTRY    55
+#define INIT_POS_SUMMIT_EXIT     56
+#define INIT_POS_MIDDLE_UPWARD   86
 #include "Lift.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -5,8 +9,8 @@
 
 /*  create_lift():
  *  Creates a lift and associates it with the given clock. After initially
- *  nullifying the gondola references for memory safety, 110 gondolas are
- *  added and the station gondolas are initialised.
+ *  nullifying the gondola references for memory safety, gondolas are added
+ *  and the station gondolas are initialised.
  *      params: reference to clock
  *      return: reference to lift (or NULL)
  */
@@ -24,7 +28,7 @@ Lift* create_lift(Clock* clock) {
         /* Associating lift with the given clock */
         lift->clock = clock;
         /* Creating circular linked list of gondolas */
-        for (i = 0; i < 110; i++) {
+        for (i = 0; i < TOTAL_GONDOLAS; i++) {
             add_gondola(lift);
         }
         /* Setting initial station gondolas */
@@ -85,24 +89,24 @@ void init_station_gondolas(Lift* lift) {
         /* Preparing traversal of lift (circular list of gondolas) */
         Gondola* current = lift->valley_exit;
         int gondola_counter = 1;
-        while (gondola_counter <= 86) {
-            /* Has the current gondola the 25th gondola? */
-            if (gondola_counter == 25) {
+        while (gondola_counter <= INIT_POS_MIDDLE_UPWARD) {
+            /* Is the current gondola the 25th gondola? */
+            if (gondola_counter == INIT_POS_MIDDLE_DOWNWARD) {
                 /* Marking current gondola as the downward gondola at middle station */
                 lift->middle_downward = current;
             }
-            /* Has the current gondola the 55th gondola? */
-            else if (gondola_counter == 55) {
+            /* Is the current gondola the 55th gondola? */
+            else if (gondola_counter == INIT_POS_SUMMIT_ENTRY) {
                 /* Marking current gondola as the entry gondola at summit station */
                 lift->summit_entry = current;
             }
-            /* Has the current gondola the 56th gondola? */
-            else if (gondola_counter == 56) {
+            /* Is the current gondola the 56th gondola? */
+            else if (gondola_counter == INIT_POS_SUMMIT_EXIT) {
                 /* Marking current gondola as the exit gondola at summit station */
                 lift->summit_exit = current;
             }
-            /* Has the current gondola the 86th gondola? */
-            else if (gondola_counter == 86) {
+            /* Is the current gondola the 86th gondola? */
+            else if (gondola_counter == INIT_POS_MIDDLE_UPWARD) {
                 /* Marking current gondola as the upward gondola at middle station */
                 lift->middle_upward = current;
             }

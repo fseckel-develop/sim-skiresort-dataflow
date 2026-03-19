@@ -29,10 +29,10 @@ Gondola* create_gondola(void) {
  */
 void enter_gondola(Gondola* gondola, Person* person) {
     /* Is given gondola reference valid and is at least one seat empty? */
-    if (gondola && person && gondola->passenger_count < 4) {
+    if (gondola && person && gondola->passenger_count < GONDOLA_CAPACITY) {
         int i;
         /* Repeating until person has found empty seat: */
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < GONDOLA_CAPACITY; i++) {
             /* Is current gondola seat empty? */
             if (!gondola->seat[i]) {
                 /* Associating given person with gondola seat */
@@ -57,7 +57,7 @@ void exit_gondola(Gondola* gondola, const Person* person) {
     if (gondola && person && 0 < gondola->passenger_count) {
         int i;
         /* Repeating until seat of given person is found: */
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < GONDOLA_CAPACITY; i++) {
             /* Is given person associated with current gondola seat? */
             if (gondola->seat[i] == person) {
                 /* Nullifying seat to break association with person */
@@ -82,7 +82,7 @@ void destroy_gondola(Gondola* gondola) {
     if (gondola) {
         int i = 0;
         /* Destroying any person still associated to a gondola seat */
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < GONDOLA_CAPACITY; i++) {
             destroy_person(gondola->seat[i]);
         }
         /* Breaking association to following gondola */

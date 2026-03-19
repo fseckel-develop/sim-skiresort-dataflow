@@ -1,5 +1,6 @@
 #ifndef BUS_H
 #define BUS_H
+#define BUS_CAPACITY 50
 #include "List.h"
 
 

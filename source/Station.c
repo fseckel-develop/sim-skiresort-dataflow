@@ -103,9 +103,7 @@ void exit_lift(const Station* station) {
     /* Is the given station reference valid? */
     if (station) {
         int i;
-        /* Repeating for each of the station gondolas seats: */
-        for (i = 0; i < 4; i++) {
-            /* Saving reference to the person in upward gondola (or NULL) */
+        for (i = 0; i < GONDOLA_CAPACITY; i++) {
             Person* passenger = station->upward_gondola->seat[i];
             /* Is the reference valid and does the person want to exit at this station? */
             if (passenger && passenger->going_to == station->id) {

@@ -277,9 +277,7 @@ void enter_lift(const LiftQueue* lift_queue) {
     /* Is the given lift queue reference valid? */
     if (lift_queue) {
         int i;
-        /* Repeating for every seat of entry gondola: */
-        for (i = 0; i < 4; i++) {
-            /* Is the queue not empty and is the gondola seat not occupied? */
+        for (i = 0; i < GONDOLA_CAPACITY; i++) {
             if (!queue_is_empty(lift_queue->queue) && !lift_queue->entry_gondola->seat[i]) {
                 /* Extracting new passenger from the front of the queue */
                 Person* new_passenger = dequeue(lift_queue->queue);

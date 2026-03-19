@@ -40,7 +40,7 @@ CarPark* create_car_park(Station* entry, Clock* clock) {
  */
 void car_is_arriving(CarPark* car_park) {
     /* Is the given car park reference valid and is the car park not full? */
-    if (car_park && car_park->car_count < 50) {
+    if (car_park && car_park->car_count < CAR_PARK_CAPACITY) {
         /* Pulling random integer between 1 and 100, uniformly distributed */
         const int random = random_int_in_range(1, 100);
         /* Is random number between 0 and an upper bound dependent on the current
@@ -149,7 +149,7 @@ void enter_own_car(const CarPark* car_park, Person* person) {
     if (car_park && person) {
         int i;
         /* Repeating until person entered their own car: */
-        for (i = 0; i < 50; i++) {
+        for (i = 0; i < CAR_PARK_CAPACITY; i++) {
             /* Is the parking spot occupied and is the parked car associated with the person? */
             if (car_park->parked_cars[i] && car_park->parked_cars[i]->id == person->car_id) {
                 /* Adding returned passenger to the car passenger list */
@@ -173,7 +173,7 @@ void cars_are_departing(CarPark* car_park) {
     if (car_park && 0 < car_park->car_count) {
         int i;
         /* Repeating for each parking spot in the car park: */
-        for (i = 0; i < 50; i++) {
+        for (i = 0; i < CAR_PARK_CAPACITY; i++) {
             /* Is there a full car at the parking spot? */
             if (car_is_full(car_park->parked_cars[i])) {
                 /* Removing car from the parking spot */
@@ -203,7 +203,7 @@ void destroy_car_park(CarPark* car_park) {
         /* Breaking association with clock */
         car_park->clock = NULL;
         /* Destroying any left car at the car park */
-        for (i = 0; i < 50; i++) {
+        for (i = 0; i < CAR_PARK_CAPACITY; i++) {
             destroy_car(car_park->parked_cars[i]);
         }
         /* Freeing memory of the given car park */

@@ -9,14 +9,8 @@
  */
 Queue* create_queue(void) {
     /* Allocating memory for a Queue struct */
-    Queue* queue = malloc(sizeof(Queue));
+    Queue* queue = calloc(1, sizeof(Queue));
     /* Has the memory allocation been unsuccessful? */
-    if (queue) {
-        /* Initializing front reference, rear reference and list size */
-        queue->front = NULL;
-        queue->rear = NULL;
-        queue->size = 0;
-    }
     return queue;
 }
 

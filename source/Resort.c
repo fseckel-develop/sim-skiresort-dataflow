@@ -14,7 +14,7 @@ Resort* create_resort(Clock* clock) {
     /* Is the given clock reference valid? */
     if (clock) {
         /* Allocating memory for a Resort struct */
-        Resort* resort = malloc(sizeof(Resort));
+        Resort* resort = calloc(1, sizeof(Resort));
         /* Has the memory allocation been unsuccessful? */
         if (!resort) {
             fprintf(stderr, "Error in create_resort: failed to allocate memory for resort\n");

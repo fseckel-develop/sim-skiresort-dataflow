@@ -15,7 +15,7 @@ Car* create_car(Clock* clock) {
     /* Is the given clock reference valid? */
     if (clock) {
         /* Allocating memory for a Car struct */
-        Car* car = malloc(sizeof(Car));
+        Car* car = calloc(1, sizeof(Car));
         /* Has the memory allocation been unsuccessful? */
         if (!car) {
             fprintf(stderr, "Error in create_car: failed to allocate memory for car\n");

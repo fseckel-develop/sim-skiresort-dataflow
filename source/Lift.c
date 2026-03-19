@@ -15,7 +15,7 @@ Lift* create_lift(Clock* clock) {
     if (clock) {
         int i;
         /* Allocating memory for a Lift struct */
-        Lift* lift = malloc(sizeof(Lift));
+        Lift* lift = calloc(1, sizeof(Lift));
         /* Has the memory allocation been unsuccessful? */
         if (!lift) {
             fprintf(stderr, "Error in create_lift: failed to allocate memory for lift\n");
@@ -23,10 +23,7 @@ Lift* create_lift(Clock* clock) {
         }
         /* Associating lift with the given clock */
         lift->clock = clock;
-        /* Nullifying entry gondola at valley station for memory-safe lift build up,
-         * since it needs to be properly initialised in add_gondola() at line 62 */
-        lift->valley_entry = NULL;
-        /* Creating circular linked list of 110 gondolas */
+        /* Creating circular linked list of gondolas */
         for (i = 0; i < 110; i++) {
             add_gondola(lift);
         }

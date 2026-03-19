@@ -12,9 +12,7 @@
 Bistro* create_bistro(Station* entry) {
     /* Is the given station reference valid? */
     if (entry) {
-        /* Allocating memory for a Bistro struct */
-        Bistro* bistro = malloc(sizeof(Bistro));
-        /* Has the memory allocation been unsuccessful? */
+        Bistro* bistro = calloc(1, sizeof(Bistro));
         if (!bistro) {
             fprintf(stderr, "Error in create_bistro: failed to allocate memory for bistro\n");
             return NULL;

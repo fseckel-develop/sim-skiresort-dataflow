@@ -9,15 +9,10 @@
  */
 Node* create_node(Person* person) {
     if (person) {
-        /* Allocating memory for a Node struct */
-        Node* node = malloc(sizeof(Node));
-        /* Has the memory allocation been unsuccessful? */
+        Node* node = calloc(1, sizeof(Node));
         if (node) {
             /* Associating the given person with the new node */
             node->person = person;
-            /* Initializing reference to neighboring nodes */
-            node->prev = NULL;
-            node->next = NULL;
             return node;
         }
     }

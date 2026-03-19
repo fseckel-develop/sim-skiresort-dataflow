@@ -11,7 +11,7 @@
  */
 Clock* init_clock(const Time time) {
     /* Allocating memory for a Clock struct */
-    Clock* clock = malloc(sizeof(Clock));
+    Clock* clock = calloc(1, sizeof(Clock));
     /* Has the memory allocation been unsuccessful? */
     if (!clock) {
         fprintf(stderr, "Error in init_clock: failed to allocate memory for clock\n");

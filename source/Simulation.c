@@ -13,7 +13,7 @@
  */
 Simulation* initiate_simulation(void) {
     /* Allocating memory for a Simulation struct */
-    Simulation* simulation = malloc(sizeof(Simulation));
+    Simulation* simulation = calloc(1, sizeof(Simulation));
     /* Has the memory allocation been unsuccessful? */
     if (!simulation) {
         fprintf(stderr, "Error in initiate_simulation: failed to allocate memory for simulation\n");

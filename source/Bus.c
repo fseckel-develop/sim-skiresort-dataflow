@@ -12,9 +12,7 @@
 Bus* create_bus(Clock* clock) {
     /* Is the given clock reference valid? */
     if (clock) {
-        /* Allocating memory for a Bus struct */
-        Bus* bus = malloc(sizeof(Bus));
-        /* Has the memory allocation been unsuccessful? */
+        Bus* bus = calloc(1, sizeof(Bus));
         if (!bus) {
             fprintf(stderr, "Error in create_bus: failed to allocate memory for bus\n");
             return NULL;

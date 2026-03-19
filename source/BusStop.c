@@ -12,7 +12,7 @@ BusStop* create_bus_stop(Station* entry, Clock* clock) {
     /* Are the given station reference and clock reference valid? */
     if (entry && clock) {
         /* Allocating memory for a BusStop struct */
-        BusStop* bus_stop = malloc(sizeof(BusStop));
+        BusStop* bus_stop = calloc(1, sizeof(BusStop));
         /* Has the memory allocation been unsuccessful? */
         if (!bus_stop) {
             fprintf(stderr, "Error in create_bus_stop: failed to allocate memory for bus stop\n");
@@ -31,8 +31,6 @@ BusStop* create_bus_stop(Station* entry, Clock* clock) {
             destroy_bus_stop(bus_stop);
             return NULL;
         }
-        /* Initializing the parking spot (no bus at the bus stop at first) */
-        bus_stop->bus = NULL;
         return bus_stop;
     }
     return NULL;

@@ -14,7 +14,7 @@ Station* create_station(const Position id, const Lift* lift) {
     /* Is the given lift reference valid? */
     if (lift) {
         /* Allocating memory for a Station struct */
-        Station* station = malloc(sizeof(Station));
+        Station* station = calloc(1, sizeof(Station));
         /* Has the memory allocation been unsuccessful? */
         if (!station) {
             fprintf(stderr, "Error in create_station: failed to allocate memory for station\n");

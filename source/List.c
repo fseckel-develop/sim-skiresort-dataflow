@@ -9,13 +9,7 @@
  */
 List* create_list(void) {
     /* Allocating memory for a List struct */
-    List* list = malloc(sizeof(List));
-    /* Has the memory allocation been unsuccessful? */
-    if (list) {
-        /* Initializing front reference and list size */
-        list->front = NULL;
-        list->size = 0;
-    }
+    List* list = calloc(1, sizeof(List));
     return list;
 }
 

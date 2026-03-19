@@ -11,21 +11,12 @@
  */
 Gondola* create_gondola(void) {
     /* Allocating memory for a Gondola struct */
-    Gondola* gondola = malloc(sizeof(Gondola));
+    Gondola* gondola = calloc(1, sizeof(Gondola));
     /* Has the memory allocation been unsuccessful? */
     if (!gondola) {
         fprintf(stderr, "Error in create_gondola: failed to allocate memory for gondola...\n");
         return NULL;
     }
-    /* Setting initial passenger count for empty gondola */
-    gondola->passenger_count = 0;
-    /* Initially nullifying every gondola seat */
-    gondola->seat[0] = NULL;
-    gondola->seat[1] = NULL;
-    gondola->seat[2] = NULL;
-    gondola->seat[3] = NULL;
-    /* Initially nullifying reference to following gondola */
-    gondola->follower = NULL;
     return gondola;
 }
 

@@ -12,9 +12,8 @@
 CarPark* create_car_park(Station* entry, Clock* clock) {
     /* Are the given station reference and clock reference valid? */
     if (entry && clock) {
-        int i;
         /* Allocating memory for a CarPark struct */
-        CarPark* car_park = malloc(sizeof(CarPark));
+        CarPark* car_park = calloc(1, sizeof(CarPark));
         /* Has the memory allocation been unsuccessful? */
         if (!car_park) {
             fprintf(stderr, "Error in create_car_park: failed to allocate memory for car park\n");
@@ -24,12 +23,6 @@ CarPark* create_car_park(Station* entry, Clock* clock) {
         car_park->entry = entry;
         /* Associating hotel with the given clock */
         car_park->clock = clock;
-        /* Setting initial car count for empty car park */
-        car_park->car_count = 0;
-        /* Initially nullifying every parking spot of the car park */
-        for (i = 0; i < 50; i++) {
-            car_park->parked_cars[i] = NULL;
-        }
         return car_park;
     }
     return NULL;

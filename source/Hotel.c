@@ -15,7 +15,7 @@ Hotel* create_hotel(Station* entry, Clock* clock) {
     /* Are the given station reference and clock reference valid? */
     if (entry && clock) {
         /* Allocating memory for a Hotel struct */
-        Hotel* hotel = malloc(sizeof(Hotel));
+        Hotel* hotel = calloc(1, sizeof(Hotel));
         /* Has the memory allocation been unsuccessful? */
         if (!hotel) {
             fprintf(stderr, "Error in create_hotel: failed to allocate memory for hotel\n");

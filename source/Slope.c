@@ -15,7 +15,7 @@ Slope* create_slope(const Position id, Station* entry, Station* finish, const in
     /* Are the given station references valid? */
     if (entry && finish) {
         /* Allocating memory for a Slope struct */
-        Slope* slope = malloc(sizeof(Slope));
+        Slope* slope = calloc(1, sizeof(Slope));
         /* Has the memory allocation been unsuccessful? */
         if (!slope) {
             fprintf(stderr, "Error in create_slope: failed to allocate memory for slope\n");
@@ -29,8 +29,6 @@ Slope* create_slope(const Position id, Station* entry, Station* finish, const in
         /* Setting the characteristic skiing times for the slope */
         slope->fastest = fastest;
         slope->average = average;
-        /* Initializing the slopes entry count */
-        slope->total_entries = 0;
         /* Creating a list for skiers on the slope */
         slope->skiers = create_list();
         /* Has the list creation been unsuccessful? */

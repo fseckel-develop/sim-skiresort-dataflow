@@ -13,7 +13,7 @@ LiftQueue* create_lift_queue(const Position id, Station* entry) {
     /* Is the given station reference valid? */
     if (entry) {
         /* Allocating memory for a LiftQueue struct */
-        LiftQueue* lift_queue = malloc(sizeof(LiftQueue));
+        LiftQueue* lift_queue = calloc(1, sizeof(LiftQueue));
         /* Has the memory allocation been unsuccessful? */
         if (!lift_queue) {
             fprintf(stderr, "Error in create_lift_queue: failed to allocate memory for lift queue\n");
@@ -23,9 +23,6 @@ LiftQueue* create_lift_queue(const Position id, Station* entry) {
         lift_queue->id = id;
         /* Associating lift queue with the given station */
         lift_queue->entry = entry;
-        /* Setting initial count of sold tickets */
-        lift_queue->sold_ten_tickets = 0;
-        lift_queue->sold_day_tickets = 0;
         /* Creating a queue for waiting lift passengers */
         lift_queue->queue = create_queue();
         /* Has the queue creation been unsuccessful? */

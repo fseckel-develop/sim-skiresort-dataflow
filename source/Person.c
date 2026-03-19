@@ -17,7 +17,7 @@ Person* create_person(const Position origin, Clock* clock) {
     /* Are the given clock reference and the given origin position valid? */
     if (clock && (origin == CAR_PARK || origin == BUS_STOP || origin == HOTEL)) {
         /* Allocating memory for a Person struct */
-        Person* person = malloc(sizeof(Person));
+        Person* person = calloc(1, sizeof(Person));
         /* Has the memory allocation been unsuccessful? */
         if (!person) {
             fprintf(stderr, "Error in create_person: failed to allocate memory for person\n");

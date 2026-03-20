@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif
 
 
 /*  enable_random():
@@ -53,7 +56,7 @@ double random_unit_open_interval(void) {
  *      return: double value
  */
 double box_muller_transform(const double u1, const double u2) {
-    return sqrt(-2.0 * log(u1)) * cos(2 * M_PI * u2);
+    return sqrt(-2.0 * log(u1)) * cos(2 * PI * u2);
 }
 
 

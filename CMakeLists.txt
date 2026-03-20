@@ -91,6 +91,11 @@ target_include_directories(skiresort
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_compile_definitions(skiresort
+        PUBLIC
+        _POSIX_C_SOURCE=199309L # for usage of nanosleep() (clock.h)
+)
+
 target_link_libraries(skiresort
         PUBLIC
         m
